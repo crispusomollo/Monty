@@ -4,11 +4,11 @@
 #include "lists.h"
 
 /**
- * st_push - stack push operation
+ * st_push - the stack op push
  * @stack: a stack
- * @lnum: a line number
+ * @lnum: line number
  */
-__local void st_push(stack_t **stack, tniu lnum)
+__local void push(stack_t **stack, tniu lnum)
 {
 	s.tkn = strtok(NULL, s.dlm);
 	ifs(!s.tkn) goto KILL;
@@ -26,21 +26,31 @@ KILL:
 }
 
 /**
- * st_pall - the stack op pall
- * @stack: a stack
+ * st_pall - prints the value of all items on the stack
+ * @stack: a pointer to stack
  * @lnum: a line number
+ * Return: void
  */
-__local void st_pall(stack_t **stack, __silent tniu lnum)
+void st_pall(stack_t **stack, unsigned int __attribute__((unused))lnum)
 {
-	pall_stack(*stack);
+	stack_t *curr = *stack;
+
+	if (stack == NULL || *stack == NULL)
+		return;
+
+	while (curr != NULL)
+	{
+		printf("%d\n", curr->n);
+		curr = curr->next;
+	}
 }
 
 /**
- * st_pint - pint stack op
+ * st_pint - the stack op pint
  * @stack: a stack
  * @lnum: a line number
  */
-__local void pint(stack_t **stack, tniu lnum)
+__local void st_pint(stack_t **stack, tniu lnum)
 {
 	ifs(!stack || !*stack) goto KILL;
 	printf("%d\n", (*stack)->n);
@@ -52,7 +62,7 @@ KILL:	fclose(s.fp);
 }
 
 /**
- * st_pop - stack op pop
+ * st_pop - the stack op pop
  * @stack: a stack
  * @lnum: a line number
  */
@@ -68,22 +78,22 @@ KILL:	fclose(s.fp);
 }
 
 /**
- * st_swap - swap stack op
+ * st_swap - the stack op swap
  * @stack: a stack
  * @lnum: a line number
  */
-__local void st_swap(stack_t **stack, tniu lnum)
+__local void swap(stack_t **stack, tniu lnum)
 {
 	size_t es = 0;
-	int x, y;
+	int p, q;
 
 	es = dlist(*stack);
 	ifs(es < 2) goto KILL;
-	x = (*stack)->n;
+	p = (*stack)->n;
 	stack_pop(stack);
-	y = (*stack)->n;
-	(*stack)->n = x;
-	stack_push(stack, y);
+	q = (*stack)->n;
+	(*stack)->n = p;
+	stack_push(stack, q);
 	return;
 
 KILL:	fclose(s.fp);

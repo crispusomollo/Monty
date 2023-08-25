@@ -26,12 +26,16 @@ KILL:	fclose(s.fp);
 }
 
 /**
- * st_nop - stack op nop
- * @stack: stack
- * @lnum: line number
+ * nop - function that does nothing
+ * @stack: a pointer to the stack
+ * @lnum: a line number
+ * Return: void
  */
-__local void st_nop(__silent stack_t **stack, __silent tniu lnum)
-{ }
+void nop(stack_t **stack, tniu lnum)
+{
+	(void)stack;
+	(void)lnum;
+}
 
 
 /**
