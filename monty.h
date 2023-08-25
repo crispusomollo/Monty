@@ -36,8 +36,8 @@ enum modes
 
 /**
  * struct state_s - state variable
- * @delim: delim
- * @token: token
+ * @dlm: a delimeyter
+ * @tkn: a token
  * @fp: file pointer
  * @line: file line
  * @mode: operation mode
@@ -71,7 +71,7 @@ typedef struct stack_s
 /**
  * struct instr_s - handles the opcode and it's function
  * @opcode: the opcode
- * @f: the function to handle the opcode
+ * @fx: the function to handle the opcode
  *
  * Description: handles the opcode and its function
  * for stack, queues, LIFO, FIFO
@@ -108,7 +108,7 @@ __local size_t dlist(const stack_t *ls)
 
 /**
  * is_num - iterates each xter of string to check if isdigit
- * @num: an integer
+ * @n: an integer
  * Return: 0 if it is number, else -1 if it is not
  */
 __local int is_num(const char *n)

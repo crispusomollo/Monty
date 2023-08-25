@@ -6,7 +6,7 @@
 /**
  * stack_push - add a node to the head of a list
  * @hd: a pointer to the head
- * @nd: a new node to add
+ * @n: a new node to add
  * Return: new list
  */
 __local stack_t *stack_push(stack_t **hd, const int n)
@@ -34,7 +34,7 @@ __local stack_t *stack_push(stack_t **hd, const int n)
  * free_dblist - Frees a linked stack_t list.
  * @hd: The head of the stack_t list.
  */
-__local void stack_empty(stack_t *head)
+__local void empty_stack(stack_t *hd)
 {
 	stack_t *tmp;
 
@@ -47,7 +47,7 @@ __local void stack_empty(stack_t *head)
 }
 
 /**
- * pop_stack - deletes node at end of doubly linked list
+ * stack_pop - deletes node at end of doubly linked list
  * @hd: pointer to head of doubly linked list
  */
 void stack_pop(stack_t **hd)

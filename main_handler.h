@@ -11,7 +11,7 @@
  *
  */
 __local
-void (*fget(char *opcode))(stack_t **stack, tniu lnum) 
+void (*fget(char *opcode))(stack_t **stack, tniu lnum)
 {
 	instruction_t opt[] = {
 	{"rotl", rotl},
