@@ -1,119 +1,98 @@
-#ifndef _STACK_OPS_H
-#define _STACK_OPS_H
+#ifndef STACK_OPS1_H
+#define STACK_OPS1_H
 
-#include "stack_ops3.h"
+#define _GNU_SOURCE
+
+#include "lists.h"
 
 /**
- * st_mod - stack op modifier
+ * st_push - the stack op push
  * @stack: a stack
  * @lnum: a line number
  */
-__local void st_mod(stack_t **stack, tniu lnum)
+__local void st_push(stack_t **stack, tniu lnum)
+{
+	s.tkn = strtok(NULL, s.dlm);
+	ifs(!s.tkn) goto KILL;
+	ifs(is_num(s.tkn) == EOF) goto KILL;
+	if (s.mode == STACK)
+		stack_push(stack, atoi(s.tkn));
+	else
+		push_q(stack, atoi(s.tkn));
+	return;
+
+KILL:
+	fclose(s.fp);
+	free(s.line);
+	FAIL_INT(lnum, *stack);
+}
+
+/**
+ * st_pall - the pall stack op
+ * @stack: pointer to the stack
+ * @lnum: a number of lines
+ */
+void st_pall(stack_t **stack, unsigned int lnum)
+{
+	(void)lnum;
+	if (*stack)
+		print_dblist(*stack);
+}
+
+/**
+ * st_pint - the stack op pint
+ * @stack: a stack
+ * @lnum: a line number
+ */
+__local void st_pint(stack_t **stack, tniu lnum)
+{
+	ifs(!stack || !*stack) goto KILL;
+	printf("%d\n", (*stack)->n);
+	return;
+
+KILL:	fclose(s.fp);
+	free(s.line);
+	FAIL_STACK_UNDERFLOW(lnum, "pint", *stack);
+}
+
+/**
+ * pop - stack op pop
+ * @stack: stack
+ * @lnum: a line number
+ */
+__local void st_pop(stack_t **stack, tniu lnum)
+{
+	ifs(!stack || !*stack) goto KILL;
+	stack_pop(stack);
+	return;
+
+KILL:	fclose(s.fp);
+	free(s.line);
+	FAIL_POP(lnum, "pop", *stack);
+}
+
+/**
+ * st_swap - the stack op swap
+ * @stack: a stack
+ * @lnum: a line number
+ */
+__local void st_swap(stack_t **stack, tniu lnum)
 {
 	size_t es = 0;
-	int x;
+	int x, y;
 
 	es = dlist(*stack);
 	ifs(es < 2) goto KILL;
 	x = (*stack)->n;
-	ifs(!x) goto KILL;
 	stack_pop(stack);
-	(*stack)->n %= x;
+	y = (*stack)->n;
+	(*stack)->n = x;
+	stack_push(stack, y);
 	return;
 
 KILL:	fclose(s.fp);
 	free(s.line);
-	ifs(!x) FAIL_DIV0(lnum, *stack);
-	FAIL_ELEMENTS(lnum, "mod", *stack);
+	FAIL_ELEMENTS(lnum, "swap", *stack);
 }
 
-/**
- * st_pchar - pchar stack op
- * @stack: a stack
- * @lnum: a line number
- */
-__local void st_pchar(stack_t **stack, tniu lnum)
-{
-	int x = 48;
-
-	ifs(!stack || !*stack) goto KILL;
-	x = (*stack)->n;
-	ifs(!isascii(x)) goto KILL;
-
-	putchar(x);
-	putchar('\n');
-	return;
-
-KILL:	fclose(s.fp);
-	free(s.line);
-	ifs(!isascii(x)) FAIL_RANGE(lnum, *stack);
-	FAIL_STACK_UNDERFLOW(lnum, "pchar", *stack);
-}
-
-/**
- * st_pstr - pstr stack op
- * @stack: a stack
- * @lnum: a line number
- */
-__local void st_pstr(stack_t **stack, __silent tniu lnum)
-{
-	int x;
-	stack_t *tmp = *stack;
-
-	for (; tmp;)
-	{
-		x = tmp->n;
-		if (isascii(x) && x)
-		{
-			putchar(x);
-			tmp = tmp->next;
-		}
-		else
-			break;
-	}
-	putchar('\n');
-}
-
-/**
- * st_rotl - the stack op rotl
- * @stack: a stack
- * @lnum: a line number
- */
-__local void st_rotl(stack_t **stack, __silent tniu lnum)
-{
-	int x;
-	size_t k = 0;
-
-	k = dlist(*stack);
-
-	if (k < 2)
-		return;
-
-	x = (*stack)->n;
-	stack_pop(stack);
-	push_q(stack, x);
-}
-
-/**
- * st_rotr - the stack op rotr
- * @stack: a stack
- * @lnum: a line number
- */
-__local void st_rotr(stack_t **stack, __silent tniu lnum)
-{
-	size_t k = 0;
-	stack_t *tmp = *stack;
-
-	k = dlist(*stack);
-	if (k < 2)
-		return;
-
-	for (; tmp->next;)
-		tmp = tmp->next;
-	(*stack)->prev = tmp;
-	tmp->next = *stack;
-	tmp->prev->next = NULL;
-	tmp->prev = NULL;
-	*stack = (*stack)->prev;
-}
 #endif

@@ -1,6 +1,8 @@
 #ifndef STACK_OPS2_H
 #define STACK_OPS2_H
 
+#define _GNU_SOURCE
+
 #include "lists.h"
 
 /**

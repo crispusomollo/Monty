@@ -1,12 +1,12 @@
 #ifndef __MONTY_H
 #define __MONTY_H
 
+#define _GNU_SOURCE
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
 
 #define __silent __attribute__((unused
 #define __local __attribute__((weak))

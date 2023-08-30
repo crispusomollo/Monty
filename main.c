@@ -8,5 +8,5 @@
  */
 int main(int agc, char **agv)
 {
-	return (handler(agc, agv));
+	return (main_handler(agc, agv));
 }

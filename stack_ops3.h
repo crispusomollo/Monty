@@ -1,6 +1,8 @@
 #ifndef STACK_OPS3_H
 #define STACK_OPS3_H
 
+#define _GNU_SOURCE
+
 #include "stack_ops2.h"
 
 /**
@@ -90,7 +92,7 @@ KILL:	fclose(s.fp);
  * @stack: a stack
  * @lnum: line number
  */
-__local void st _mul(stack_t **stack, tniu lnum)
+__local void st_mul(stack_t **stack, tniu lnum)
 {
 	size_t es = 0;
 	int x;

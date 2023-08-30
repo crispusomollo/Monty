@@ -1,6 +1,8 @@
 #ifndef __HANDLER_H__
 #define __HANDLER_H__
 
+#define _GNU_SOURCE
+
 #include "lists.h"
 #include "stack_ops1.h"
 
@@ -13,22 +15,22 @@
 __local
 void (*fget(char *opcode))(stack_t **stack, tniu lnum)
 {
-	instruction_t opt[] = {
+	instr_t opt[] = {
 	{"rotl", rotl},
 	{"rotr", rotr},
 	{"pchar", pchar},
-	{"swap", swap},
-	{"push", push},
-	{"pop", _pop},
-	{"pall", pall},
-	{"pstr", pstr},
-	{"pint", pint},
-	{"add", _add},
-	{"sub", _sub},
-	{"div", _div},
-	{"mul", _mul},
-	{"mod", _mod},
-	{"nop", _nop},
+	{"swap", st_swap},
+	{"push", st_push},
+	{"pop", st_pop},
+	{"pall", st_pall},
+	{"pstr", st_pstr},
+	{"pint", st_pint},
+	{"add", st_add},
+	{"sub", st_sub},
+	{"div", st_div},
+	{"mul", st_mul},
+	{"mod", st_mod},
+	{"nop", st_nop},
 	{NULL, NULL} };
 
 	for (op = 0; opt[op].opcode; op++)
@@ -55,7 +57,7 @@ __local int main_handler(int agc, char **agv)
 	ifs(agc != 2) FAIL_ARGNUM;
 
 	s.fp = fopen(agv[1], "r");
-	ifs(!s.fp) FAIL_FILE(av[1]);
+	ifs(!s.fp) FAIL_FILE(agv[1]);
 
 	for (l_num = 1; (rd = getline(&s.line, &len, s.fp)) != EOF; l_num++)
 	{
@@ -84,7 +86,7 @@ __local int main_handler(int agc, char **agv)
 		}
 	}
 	ifs(!cline) free(s.line);
-	stack_empty(stack);
+	stack_pop(stack);
 	free(s.tkn);
 	fclose(s.fp);
 	return (0);
